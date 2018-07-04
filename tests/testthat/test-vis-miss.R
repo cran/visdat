@@ -5,6 +5,8 @@ vis_miss_plot <- vis_miss(typical_data)
 vis_miss_plot_cluster <- vis_miss(typical_data, cluster = TRUE)
 vis_miss_plot_sort_rows <- vis_miss(typical_data, sort_miss = TRUE)
 vis_miss_plot_show_perc <- vis_miss(typical_data, show_perc = FALSE)
+vis_miss_plot_show_perc_col <- vis_miss(typical_data, show_perc_col = FALSE)
+vis_miss_plot_show_perc_col_t <- vis_miss(typical_data, show_perc_col = TRUE)
 
 test_that("vis_miss creates the right plot",{
   skip_on_cran()
@@ -14,4 +16,6 @@ test_that("vis_miss creates the right plot",{
   vdiffr::expect_doppelganger("vis_miss cluster", vis_miss_plot_cluster)
   vdiffr::expect_doppelganger("vis_miss sort rows", vis_miss_plot_sort_rows)
   vdiffr::expect_doppelganger("vis_miss show percent", vis_miss_plot_show_perc)
+  vdiffr::expect_doppelganger("vis_miss show percent in columns", vis_miss_plot_show_perc_col)
+  vdiffr::expect_doppelganger("vis_miss no show percent in columns", vis_miss_plot_show_perc_col_t)
 })

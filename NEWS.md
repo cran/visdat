@@ -1,4 +1,47 @@
-# visdat 0.1.0 (2017/07/03)
+# visdat 0.5.1 (2018/07/02) "The Northern Lights Moonwalker"
+
+## New Feature
+
+* `vis_compare()` for comparing two dataframes of the same dimensions
+* `vis_expect()` for visualising where certain values of expectations occur in the data
+    * Added NA colours to `vis_expect`
+    * Added `show_perc` arg to `vis_expect` to show the percentage of expectations that are TRUE. #73
+* `vis_cor` to visualise correlations in a dataframe
+* `vis_guess()` for displaying the likely type for each cell in a dataframe
+* Added draft `vis_expect` to make it easy to look at certain appearances of numbers in your data.
+* visdat is now under the rOpenSci github repository
+
+## Minor Changes
+
+* added CITATION for visdat to cite the JOSS article
+* updated options for `vis_cor` to use argument `na_action` not `use_op`.
+* cleaned up the organisation of the files and internal functions
+* Added appropriate legend and x axis for `vis_miss_ly` - thanks to Stuart Lee
+* Updated the `paper.md` for JOSS
+* Updated some old links in doco
+* Added Sean Hughes and Mara Averick to the DESCRIPTION with `ctb`.
+* Minor changes to the paper for JOSS
+
+## Bug Fixes
+
+* Fix bug reported in [#75](https://github.com/ropensci/visdat/issues/75) 
+  where `vis_dat(diamonds)` errored `seq_len(nrow(x))` inside internal 
+  function `vis_gather_`, used to calculate the row numbers. Using 
+  `mutate(rows = dplyr::row_number())` solved the issue.
+
+* Fix bug reported in [#72](https://github.com/ropensci/visdat/issues/72)
+  where `vis_miss` errored when one column was given to it. This was an issue
+  with using `limits` inside `scale_x_discrete` - which is used to order the
+  columns of the data. It is not necessary to order one column of data, so I
+  created an if-else to avoid this step and return the plot early.
+
+* Fix visdat x axis alignment when show_perc_col = FALSE - [#82](https://github.com/ropensci/visdat/issues/82)
+
+* fix visdat x axis alignment - [issue 57](https://github.com/ropensci/visdat/issues/57)
+* fix bug where the column percentage missing would print to be NA when it was exactly equal to 0.1% missing. - [issue 62](https://github.com/ropensci/visdat/issues/62)
+* `vis_cor` didn't gather variables for plotting appropriately - now fixed
+
+# visdat 0.1.0 (2017/07/03) ("JOSS")
 
 - lightweight CRAN submission - will only contain functions `vis_dat` and `vis_miss`
 
@@ -103,4 +146,3 @@
 ## New Features
 
 - `vis_miss()` and `vis_dat` actually run
-

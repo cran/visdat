@@ -17,22 +17,45 @@
 #'   appropriate for those with colourblindness. "qual" and "cb_safe" are drawn
 #'   from http://colorbrewer2.org/.
 #'
-#' @param warn_large_data logical default is TRUE
+#' @param warn_large_data logical - warn if there is large data? Default is TRUE
+#'   see note for more details
 #'
-#' @param large_data_size integer default is 900000, this can be changed.
+#' @param large_data_size integer default is 900000, this can be changed. See
+#'   note for more details
 #'
 #' @return `ggplot2` object displaying the type of values in the data frame and
 #'   the position of any missing values.
 #'
-#' @seealso [vis_miss()]
+#' @seealso  [vis_miss()] [vis_guess()] [vis_expect()] [vis_cor()]
+#'   [vis_compare()]
+#'
+#' @note Some datasets might be too large to plot, sometimes creating a blank
+#'   plot - if this happens, I would recommend downsampling the data, either
+#'   looking at the first 1,000 rows or by taking a random sample. This means
+#'   that you won't get the same "look" at the data, but it is better than
+#'   a blank plot! See example code for suggestions on doing this.
 #'
 #' @examples
 #'
 #' vis_dat(airquality)
 #'
+#' \dontrun{
 #' # experimental colourblind safe palette
 #' vis_dat(airquality, palette = "cb_safe")
 #' vis_dat(airquality, palette = "qual")
+#'
+#' # if you have a large dataset, you might want to try downsampling:
+#' library(nycflight13)
+#' library(dplyr)
+#' flights %>%
+#'   sample_n(1000) %>%
+#'   vis_dat()
+#'
+#' flights %>%
+#'   slice(1:1000) %>%
+#'   vis_dat()
+#'
+#' }
 #'
 #' @export
 vis_dat <- function(x,
@@ -53,7 +76,7 @@ vis_dat <- function(x,
       # get the class, if there are multiple classes, combine them together
       purrr::map_chr(.x = x,
                      .f = function(x) paste(class(x), collapse = "\n"))
-      )
+    )
     # get the names of those columns
     type_order_index <- names(x)[type_sort]
 
@@ -67,7 +90,7 @@ vis_dat <- function(x,
   d <- x %>%
     purrr::map_df(fingerprint) %>%
     vis_gather_() %>%
-  # get the values here so plotly can make them visible
+    # get the values here so plotly can make them visible
     dplyr::mutate(value = vis_extract_value_(x))
 
   # do the plotting
@@ -78,9 +101,10 @@ vis_dat <- function(x,
     ggplot2::guides(fill = ggplot2::guide_legend(title = "Type")) +
     # add info about the axes
     ggplot2::scale_x_discrete(limits = type_order_index,
-                              position = "top")
+                              position = "top") +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(hjust = 0))
 
   # specify a palette ----------------------------------------------------------
   add_vis_dat_pal(vis_dat_plot, palette)
 
-} # close function
+  } # close function
