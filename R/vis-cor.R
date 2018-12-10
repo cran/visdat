@@ -28,6 +28,9 @@ vis_cor <- function(data,
                     na_action = "pairwise.complete.obs",
                     ...){
 
+  # throw error if data not data.frame
+  test_if_dataframe(data)
+
   if (!all_numeric(data)) {
     stop("data input can only contain numeric values, please subset the data to the numeric values you would like.")
   } else {
@@ -46,7 +49,8 @@ vis_cor <- function(data,
         ggplot2::scale_x_discrete(position = "top") +
         ggplot2::labs(x = "",
                       y = "") +
-        ggplot2::guides(fill = ggplot2::guide_legend(title = "correlation"))
+        ggplot2::guides(fill = ggplot2::guide_legend(title = "correlation")) +
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 0))
   }
   }
 
