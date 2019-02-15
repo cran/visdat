@@ -87,7 +87,7 @@ vis_expect <- function(data, expectation, show_perc = TRUE){
 
   vis_expect_plot <- data_expect %>%
     # expect_frame(expectation) %>%
-    dplyr::mutate(rows = 1:n()) %>%
+    dplyr::mutate(rows = dplyr::row_number()) %>%
     tidyr::gather_(key_col = "variable",
                    value_col = "valueType",
                    gather_cols = names(.)[-length(.)]) %>%
@@ -185,19 +185,12 @@ expect_guide_label <- function(x) {
     p_expect_true <- round(100 - p_expect,1)
 
     # create the labels
-    p_expect_false_lab <- paste("FALSE \n(",
-                                p_expect_false,
-                                "%)",
-                                sep = "")
-
-    p_expect_true_lab <- paste("TRUE \n(",
-                               p_expect_true,
-                               "%)",
-                               sep = "")
+    p_expect_false_lab <- glue::glue("TRUE\n({p_expect_false}%)")
+    p_expect_true_lab <- glue::glue("FALSE\n({p_expect_true}%)")
   }
 
-  label_frame <- tibble::tibble(p_expect_false_lab = paste(p_expect_false_lab),
-                                p_expect_true_lab = paste(p_expect_true_lab))
+  label_frame <- tibble::tibble(p_expect_false_lab,
+                                p_expect_true_lab)
 
   return(label_frame)
 

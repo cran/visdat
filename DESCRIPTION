@@ -1,6 +1,6 @@
 Package: visdat
 Title: Preliminary Visualisation of Data
-Version: 0.5.2
+Version: 0.5.3
 Authors@R: c(
   person("Nicholas", "Tierney", role = c("aut", "cre"),
       email = "nicholas.tierney@gmail.com", 
@@ -22,15 +22,17 @@ Depends: R (>= 3.2.2)
 License: MIT + file LICENSE
 LazyData: true
 RoxygenNote: 6.1.1
-Imports: ggplot2, tidyr, dplyr, purrr, readr, plotly (>= 4.5.6),
-        magrittr, stats, tibble, rlang (>= 0.2.0)
+Imports: ggplot2, tidyr, dplyr, purrr, readr, magrittr, stats, tibble,
+        glue
 URL: http://visdat.njtierney.com/, https://github.com/ropensci/visdat
 BugReports: https://github.com/ropensci/visdat/issues
-Suggests: testthat, knitr, rmarkdown, vdiffr, gdtools
+Suggests: testthat, plotly (>= 4.5.6), knitr, rmarkdown, vdiffr,
+        gdtools, spelling
 VignetteBuilder: knitr
 Encoding: UTF-8
+Language: en-US
 NeedsCompilation: no
-Packaged: 2018-12-06 03:40:51 UTC; ntie0001
+Packaged: 2019-02-15 02:57:38 UTC; ntie0001
 Author: Nicholas Tierney [aut, cre] (<https://orcid.org/0000-0003-1460-8722>),
   Sean Hughes [rev] (<https://orcid.org/0000-0002-9409-9405>, Sean Hughes
     reviewed the package for rOpenSci, see
@@ -42,4 +44,4 @@ Author: Nicholas Tierney [aut, cre] (<https://orcid.org/0000-0003-1460-8722>),
   Nic Crane [ctb]
 Maintainer: Nicholas Tierney <nicholas.tierney@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-12-10 10:00:03 UTC
+Date/Publication: 2019-02-15 15:30:03 UTC
