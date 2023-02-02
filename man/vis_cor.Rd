@@ -4,8 +4,13 @@
 \alias{vis_cor}
 \title{Visualise correlations amongst variables in your data as a heatmap}
 \usage{
-vis_cor(data, cor_method = "pearson",
-  na_action = "pairwise.complete.obs", ...)
+vis_cor(
+  data,
+  cor_method = "pearson",
+  na_action = "pairwise.complete.obs",
+  facet,
+  ...
+)
 }
 \arguments{
 \item{data}{data.frame}
@@ -18,7 +23,9 @@ abbreviated."}
 \item{na_action}{The method for computing covariances when there are missing
 values present. This can be "everything", "all.obs", "complete.obs",
 "na.or.complete", or "pairwise.complete.obs" (default). This option is
-taken from the \code{cor} function argument \code{use}.}
+taken from the \code{cor} function argument \code{use}.,}
+
+\item{facet}{bare unqouted variable to use for facetting}
 
 \item{...}{extra arguments you may want to pass to \code{cor}}
 }
@@ -30,8 +37,10 @@ Visualise correlations amongst variables in your data as a heatmap
 }
 \examples{
 vis_cor(airquality)
-\dontrun{
+vis_cor(airquality, facet = Month)
 vis_cor(mtcars)
+\dontrun{
+# this will error
 vis_cor(iris)
 }
 }

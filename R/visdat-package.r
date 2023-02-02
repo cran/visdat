@@ -15,17 +15,20 @@
 #'   \item [vis_expect()]
 #' }
 #'
-#' Learn more about visdat at \url{www.njtierney.com/visdat/articles/using_visdat.html}
+#' Learn more about visdat at \url{https://docs.ropensci.org/visdat/}
 #' @name visdat
 #' @docType package
 #' @importFrom magrittr %>%
 #' @importFrom stats cor
 #' @importFrom stats setNames
-NULL
+#' @keywords internal
+"_PACKAGE"
 
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
 globalVariables(c("valueGuess",
                   "valueType",
+                  "variable",
+                  "rows",
                   "row_1",
                   "row_2",
                   "value",

@@ -1,5 +1,3 @@
-context("test-vis-dat-one-col")
-
 # try out all the options, but for one column
 df <- data.frame(a = c(1:1000, rep(NA, 100)))
 
@@ -13,8 +11,7 @@ one_vis_miss_plot_show_perc_col_t <- vis_miss(df, show_perc_col = TRUE)
 
 test_that("vis_miss creates the right plot when one column is presented",{
   skip_on_cran()
-  ver <- as.character(gdtools::version_freetype())
-  cat(sprintf("FreeType version: %s\n", ver))
+  skip_on_ci()
   vdiffr::expect_doppelganger("vis_miss with one col vanilla",
                               one_vis_miss_plot)
   vdiffr::expect_doppelganger("vis_miss with one col cluster",

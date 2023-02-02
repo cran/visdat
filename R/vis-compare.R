@@ -27,17 +27,18 @@ vis_compare <- function(df1,
   # sort_match logical TRUE/FALSE.
   # TRUE arranges the columns in order of most matches.
 
-  # make a TRUE/FALSE matrix of the data.
-  # Tells us whether it is the same (true) as the other dataset, or not (false)
-
-  # throw error if df1 not data.frame
   test_if_dataframe(df1)
-
-  # throw error if df2 not data.frame
   test_if_dataframe(df2)
 
   if (!identical(dim(df1), dim(df2))) {
-    stop("vis_compare requires identical dimensions of df1 and df2")
+    cli::cli_abort(
+      c(
+        "{.fun vis_compare} requires identical dimensions of {.arg df1} and \\
+        {.arg df2}",
+        "The dimensions of {.arg df1} are: {dim(df1)}",
+        "The dimensions of {.arg df2} are: {dim(df2)}"
+        )
+    )
   }
 
   v_identical <- Vectorize(identical)
@@ -53,16 +54,16 @@ vis_compare <- function(df1,
 
   # then we plot it
   ggplot2::ggplot(data = d,
-                  ggplot2::aes_string(
-                    x = "variable",
-                    y = "rows")) +
+                  ggplot2::aes(
+                    x = variable,
+                    y = rows)) +
                     # text assists with plotly mouseover
                     # text = c("value_df1", "value_df2"))) +
     # this test code has been removed as ggplot2 version 3.0.0
     # breaks.
     # Logged in issue https://github.com/ropensci/visdat/issues/89
 
-    ggplot2::geom_raster(ggplot2::aes_string(fill = "valueType")) +
+    ggplot2::geom_raster(ggplot2::aes(fill = valueType)) +
     ggplot2::theme_minimal() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45,
                                      vjust = 1,
@@ -95,7 +96,8 @@ vis_compare <- function(df1,
 #'   case it leaves it as NA.
 #'
 #' @param x a vector
-#'
+#' @keywords internal
+#' @noRd
 #'
 compare_print <- function(x){
 

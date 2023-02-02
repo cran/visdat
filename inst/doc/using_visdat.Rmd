@@ -70,7 +70,7 @@ vis_miss(typical_data)
 
 ```
 
-The name `visdat` was chosen as it borrows from the idea of [`testdat`](https://github.com/ropensci/testdat), which provides unit testing for your data.  In a similar way, `visdat` provides visual tests, the idea being that first you visualise your data (`visdat`), then you run tests from `testdat`, or a package like `assertr`, to fix these errors.
+The name `visdat` was chosen as it borrows from the idea of [`testdat`](https://github.com/karthik/testdat), which provides unit testing for your data.  In a similar way, `visdat` provides visual tests, the idea being that first you visualise your data (`visdat`), then you run tests from `testdat`, or a package like `assertr`, to fix these errors.
 
 ## `vis_dat`
 
@@ -83,7 +83,7 @@ vis_dat(airquality)
 ```
 The plot above tells us that R reads this dataset as having numeric and integer values, with some missing data in `Ozone` and `Solar.R`. The classes are represented on the legend, and missing data represented by grey. The column/variable names are listed on the x axis. 
 
-By default, `vis_dat` sorts the columns according to the type of the data in the vectors. You can turn this off by setting `sort_type = FALSE`. This feature is better illustrated using the `typical_data` dataset, created using [wakefield](github.com/trinker/wakefield) and contained within `visdat`.
+By default, `vis_dat` sorts the columns according to the type of the data in the vectors. You can turn this off by setting `sort_type = FALSE`. This feature is better illustrated using the `typical_data` dataset, created using [wakefield](https://github.com/trinker/wakefield) and contained within `visdat`.
 
 ```{r visdat-typical}
 
@@ -157,6 +157,7 @@ Sometimes you want to see what has changed in your data. `vis_compare()` display
 Let's make some changes to the `chickwts`, and compare this new dataset.
 
 ```{r vis-compare-iris}
+set.seed(2019-04-03-1107)
 chickwts_diff <- chickwts
 chickwts_diff[sample(1:nrow(chickwts), 30),sample(1:ncol(chickwts), 2)] <- NA
 
@@ -239,6 +240,54 @@ vis_cor(airquality,
         na_action = "complete.obs")
 
 ```
+
+
+## `vis_value`
+
+`vis_value()` visualises the values of your data on a 0 to 1 scale.
+
+```{r vis-value}
+vis_value(airquality)
+```
+
+It only works on numeric data:
+
+```{r diamonds-error, eval = FALSE}
+vis_value(iris)
+```
+
+
+```
+data input can only contain numeric values, please subset the data to the numeric values you would like. dplyr::select_if(data, is.numeric) can be helpful here!
+``` 
+
+So you might need to subset the data beforehand like so:
+
+```{r diamonds-error-subset}
+
+iris %>%
+  select_if(is.numeric) %>%
+  vis_value()
+```
+
+It can be useful to arrange your data before using `vis_value` to explore possible relationships in the data:
+
+```{r airquality-arrange}
+airquality %>%
+  arrange(Wind) %>%
+  vis_value()
+```
+
+## `vis_binary`
+
+`vis_binary()` visualises the occurrence of binary values in your data. It is 
+similar to `vis_value()` except it just focusses on values that are NA, 0, and 1.
+
+```{r vis-binary}
+vis_binary(dat_bin)
+```
+
+
 
 ## `vis_guess`
 

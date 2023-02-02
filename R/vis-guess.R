@@ -45,7 +45,6 @@
 #' @export
 vis_guess <- function(x, palette = "default"){
 
-  # throw error if x not data.frame
   test_if_dataframe(x)
 
 # x = messy_df
@@ -60,7 +59,8 @@ vis_guess <- function(x, palette = "default"){
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Type")) +
       # flip the axes, add info for axes
       ggplot2::scale_x_discrete(position = "top",
-                                limits = names(x))
+                                limits = names(x)) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(hjust = 0))
 
   # specify a palette ----------------------------------------------------------
   add_vis_dat_pal(vis_plot, palette)
@@ -75,6 +75,9 @@ vis_guess <- function(x, palette = "default"){
 #'
 #' @return a character vector that describes the suspected class. e.g., "10" is
 #'   an integer, "20.11" is a double, "text" is character, etc.
+#'
+#' @keywords internal
+#' @noRd
 #'
 #' @examples
 #' \dontrun{
@@ -99,7 +102,7 @@ guess_type <- function(x){
   # of about 3. This is faster, for the moment.
 
   output <- character(length(x))
-  nas <- is.na(x)
+  nas <- (x %>% fingerprint() %>% is.na() | is.na(x))
 
   output[!nas] <- vapply(FUN = readr::guess_parser,
                          X = x[!nas],

@@ -1,4 +1,30 @@
-# visdat 0.5.3 (2019/02/04)
+# visdat 0.6.0 (2023/02/01) "Superman, Lazlo Bane"
+
+## New Feature
+
+* `vis_value()` for visualising all values in a dataset. It rescales values to be between 0 and 1. See #100
+* `vis_binary()` for visualising datasets with binary values - similar to `vis_value()`, but just for binary data (0, 1, NA). See #125. Thank you to Trish Gilholm for her suggested use case for this.
+* Implemented facetting in `vis_dat()` and `vis_cor()`, and `vis_miss()` see (#78). The next release will implement facetting for `vis_value()`, `vis_binary()`, `vis_compare()`, `vis_expect()`, and `vis_guess()`.
+* Implemented data methods for plots with `data_vis_dat()`, `data_vis_cor()`, and `data_vis_miss()` see (#78).
+* `vis_dat()` `vis_miss()` and `vis_guess()` now render missing values in list-columns (@cregouby #138)
+* Added `abbreviate_vars()` function to assist with abbreviating data names (#140)
+* Percentage missing in columns for `vis_miss()` is now rounding to integers - for more accurate representation of missingness summaries please use the `naniar` R package.
+* A new vignette on customising colour palettes in visdat, "Customising colour palettes in visdat".
+
+## Bug Fix
+
+* no longer use old version of `gather_` (#141)
+* resolve bug where `vis_value()` displayed constant values as NA values (#128) - these constant values are now shown as 1.
+* removed use of the now deprecated "aes_string" from ggplot2
+* output of plot in `vis_expect` would reorder columns ([#133](https://github.com/ropensci/visdat/issues/133)), fixed in [#143](https://github.com/ropensci/visdat/pull/134) by [@muschellij2](https://github.com/muschellij2).
+
+## Misc
+
+* No longer uses gdtools for testing (#145)
+* Use `cli` internally for error messages.
+* Speed up some internal functions in visdat
+
+# visdat 0.5.3 (2019/02/04) "The Legend of LoFi"
 
 ## Minor Change
 
@@ -118,7 +144,7 @@ need to pass `guess_integer = TRUE.`
 ## New Feature (under development)
 
 - `vis_compare` is a new function that allows you to compare two dataframes of the same dimension. It gives a fairly ugly warning if they are not of the same dimension.
-- `vis_dat` gains a "palette" argument in line with [issue 26](https://github.com/njtierney/visdat/issues/26), drawn from http://colorbrewer2.org/, there are currently three arguments, "default", "qual", and "cb_safe". "default" provides the ggplot defaults, "qual" uses some colour blind **unfriendly** colours, and "cb_safe" provides some colours friendly for colour blindness.
+- `vis_dat` gains a "palette" argument in line with [issue 26](https://github.com/ropensci/visdat/issues/26), drawn from http://colorbrewer2.org/, there are currently three arguments, "default", "qual", and "cb_safe". "default" provides the ggplot defaults, "qual" uses some colour blind **unfriendly** colours, and "cb_safe" provides some colours friendly for colour blindness.
 
 ## Minor Improvements
 

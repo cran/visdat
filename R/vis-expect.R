@@ -34,7 +34,6 @@
 #'
 #' vis_expect(dat_test, ~.x == -1)
 #'
-#' \dontrun{
 #' vis_expect(airquality, ~.x == 5.1)
 #'
 #' # explore some common NA strings
@@ -49,19 +48,17 @@
 #' )
 #'
 #' dat_ms <- tibble::tribble(~x,  ~y,    ~z,
-#'                          1,   "A",   -100,
-#'                          3,   "N/A", -99,
-#'                          NA,  NA,    -98,
+#'                          "1",   "A",   -100,
+#'                          "3",   "N/A", -99,
+#'                          "NA",  NA,    -98,
 #'                          "N A", "E",   -101,
 #'                          "na", "F",   -1)
 #'
 #' vis_expect(dat_ms, ~.x %in% common_nas)
 #'
-#' }
 #'
 vis_expect <- function(data, expectation, show_perc = TRUE){
 
-  # throw error if data not data.frame
   test_if_dataframe(data)
 
   data_expect <- expect_frame(data, expectation)
@@ -85,15 +82,23 @@ vis_expect <- function(data, expectation, show_perc = TRUE){
 
   }
 
-  vis_expect_plot <- data_expect %>%
+  colnames_data <- colnames(data_expect)
+  data_expect <- data_expect %>%
     # expect_frame(expectation) %>%
     dplyr::mutate(rows = dplyr::row_number()) %>%
-    tidyr::gather_(key_col = "variable",
-                   value_col = "valueType",
-                   gather_cols = names(.)[-length(.)]) %>%
-    ggplot2::ggplot(ggplot2::aes_string(x = "variable",
-                                        y = "rows")) +
-    ggplot2::geom_raster(ggplot2::aes_string(fill = "valueType")) +
+    tidyr::pivot_longer(
+      cols = dplyr::all_of(colnames_data),
+      names_to = "variable",
+      values_to = "valueType",
+      values_transform = list(valueType = as.character)
+    )
+  data_expect <- data_expect %>%
+    dplyr::mutate(variable = factor(variable, levels = colnames_data))
+
+  vis_expect_plot <- data_expect %>%
+    ggplot2::ggplot(ggplot2::aes(x = variable,
+                                 y = rows)) +
+    ggplot2::geom_raster(ggplot2::aes(fill = valueType)) +
     ggplot2::theme_minimal() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45,
                                                        vjust = 1,
@@ -129,9 +134,10 @@ vis_expect <- function(data, expectation, show_perc = TRUE){
 #'
 #' @return data.frames where expectation are true
 #' @author Stuart Lee and Earo Wang
+#' @keywords internal
+#' @noRd
 #'
 #' @examples
-#'
 #' \dontrun{
 #' dat_test <- tibble::tribble(
 #'             ~x, ~y,
@@ -142,7 +148,7 @@ vis_expect <- function(data, expectation, show_perc = TRUE){
 #'
 #' expect_frame(dat_test,
 #'              ~ .x == -1)
-#' }
+#'              }
 expect_frame <- function(data, expectation){
 
   my_fun <- purrr::as_mapper(expectation)
@@ -161,6 +167,8 @@ expect_frame <- function(data, expectation){
 #' @return a `tibble` with two columns `p_miss_lab` and `p_pres_lab`,
 #'   containing the labels to use for present and missing. A dataframe is
 #'   returned because I think it is a good style habit compared to a list.
+#' @keywords internal
+#' @noRd
 #'
 expect_guide_label <- function(x) {
 
